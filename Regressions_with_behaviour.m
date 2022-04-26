@@ -46,6 +46,7 @@ condition = {trialmatrix_clean.type}';
 amplitude = cell2mat({trialmatrix_clean.STV_regress_eeg_final})';
 tbl = table(pcorrect,pcorrect_change,condition,amplitude,answer,flipNumber,'VariableNames',{'pCorrect', 'pCorrectChange','condition','amplitude','answer','flipNumber'});
 tbl.condition = categorical(tbl.condition);
+tbl.answer = categorical(tbl.answer);
 %with interaction term
 lm = fitlm(tbl,'interactions','ResponseVar','amplitude','PredictorVars',{'flipNumber', 'condition'},'CategoricalVars','condition');
 lm = fitlm(tbl,'interactions','ResponseVar','amplitude','PredictorVars',{'pCorrect', 'pCorrectChange'});
@@ -56,9 +57,10 @@ lm = fitlm(tbl,'amplitude~pCorrect+pCorrectChange');
 answer = cell2mat({trialmatrix_clean.answer})';
 tbl2 = table(pcorrect,answer,amplitude,'VariableNames',{'pCorrect', 'answer','amplitude'});
 tbl2.answer = categorical(tbl2.answer);
-lm4 = fitlm(tbl,'amplitude~pCorrectChange+condition');
+lm4 = fitlm(tbl2,'amplitude~pCorrect+answer');
 lm3 = fitlm(tbl,'amplitude~flipNumber+pCorrectChange+condition');
-
+lm5 = fitlm(tbl,'amplitude~flipNumber+pCorrectChange');
+plot(lm5)
 pcorrect = cell2mat({trialmatrix_clean.majPCorrect})';
 condition = {trialmatrix_clean.type}';
 amplitude = cell2mat({trialmatrix_clean.Pz_amplitude})';
