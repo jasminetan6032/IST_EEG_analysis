@@ -1,23 +1,19 @@
 
 
-filedir = 'D:\Jasmine\EEG\IST\Electrode_regression\Electrode_regression\';
+filedir = 'D:\Jasmine\EEG\IST\Electrode_regression\SingleTrialValue\';
 filename = '_trialmatrix_EEG_regression_weighted_STV_final.mat';
 
+cd C:\Github\IST_EEG_analysis\EEG
 
+for part = 1:22
    %load data
-    tic
     trialmatrix_filename = [filedir 'Part' num2str(part) filename];
     load(trialmatrix_filename);
-    toc
 
 %remove unnecessary fields
     trialmatrix_clean = rmfield(trialmatrix_clean, {'reconstruct_pcorrect_eeg_final','EEGdata','pcorrect_reg_regress_weights', 'reconstruct_pcorrect_reg', 'STV_reg_regress_electrodes', 'pcorrect_regress_weights', 'reconstruct_pcorrect', 'STV_regress_electrodes', 'pcorrect_regress_weights_eeg_alt'});
-cd C:\Github\IST_EEG_analysis\EEG
     save(['Part' num2str(part) '_trialmatrix_EEG_regression_weighted_STV_short.mat'], 'trialmatrix_clean', '-v7.3');        
-%remove noisy epochs
-        noisy = [trialmatrix.noisy];
-        clean_data = noisy == 0;
-        trialmatrix_clean = trialmatrix(clean_data);
+end
 
 pcorrect = cell2mat({trialmatrix_clean.majPCorrect})';
 condition = {trialmatrix_clean.type}';
