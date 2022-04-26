@@ -72,7 +72,6 @@ answer = cell2mat({trialmatrix_clean.answer})';
 tbl2 = table(pcorrect,answer,amplitude,'VariableNames',{'pCorrect', 'answer','amplitude'});
 tbl2.answer = categorical(tbl2.answer);
 lm5 = fitlm(tbl2,'amplitude~pCorrect+answer');
-plot(lm5)
 
 gscatter(tbl2.amplitude,tbl2.pCorrect,tbl2.answer)
 hold on
