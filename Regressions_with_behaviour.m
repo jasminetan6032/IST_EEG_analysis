@@ -61,6 +61,8 @@ lm4 = fitlm(tbl2,'amplitude~pCorrect+answer');
 lm3 = fitlm(tbl,'amplitude~flipNumber+pCorrectChange+condition');
 lm5 = fitlm(tbl,'amplitude~flipNumber+pCorrectChange');
 plot(lm5)
+lm6 = fitlm(tbl,'amplitude~flipNumber+pCorrectChange+pCorrect');
+
 pcorrect = cell2mat({trialmatrix_clean.majPCorrect})';
 condition = {trialmatrix_clean.type}';
 amplitude = cell2mat({trialmatrix_clean.Pz_amplitude})';
