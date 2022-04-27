@@ -25,10 +25,4 @@
 %different options you are accumulating evidence for. 
 
 %extract beta estimates and run second order statistics comparing them to 0
-for part = 1:22
-answer_beta(part,1) = table2cell(participants(part).lm_answer.Coefficients(3,1));
-%answer_beta(part,2) = table2cell(participants(part).lm_answer.Coefficients(3,4));
-
-end
-[h,p] = ttest(cell2mat(answer_beta));
-histogram(cell2mat(answer_beta),15)
+answer

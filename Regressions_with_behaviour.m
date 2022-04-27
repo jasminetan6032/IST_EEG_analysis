@@ -1,5 +1,3 @@
-
-
 filedir = 'D:\Jasmine\EEG\IST\Electrode_regression\SingleTrialValue\';
 filename = '_trialmatrix_EEG_regression_weighted_STV_final.mat';
 
@@ -15,10 +13,12 @@ for part = 1:22
     save(['Part' num2str(part) '_trialmatrix_EEG_regression_weighted_STV_short.mat'], 'trialmatrix_clean', '-v7.3');
     
 end
+
 participants = struct;
 filedir = 'C:\Github\IST_EEG_analysis\EEG\';
 filename = '_trialmatrix_EEG_regression_weighted_STV_short.mat';
 save_filedir =  'C:\Github\IST_EEG_analysis\EEG_csv\';
+
 for part = 1:22
         trialmatrix_filename = [filedir 'Part' num2str(part) filename];
     load(trialmatrix_filename);
@@ -27,7 +27,11 @@ for part = 1:22
         if ~(row == 1)
             if ~(trialmatrix_clean(row).flipNumber == 1)
                 trialmatrix_clean(row).PCorrectChange = trialmatrix_clean(row).majPCorrect - trialmatrix_clean(row-1).majPCorrect;
+            elseif trialmatrix_clean(row).flipNumber == 1
+                trialmatrix_clean(row).PCorrectChange = trialmatrix_clean(row).majPCorrect - 0.5;
             end
+        elseif row ==1
+            trialmatrix_clean(row).PCorrectChange = trialmatrix_clean(row).majPCorrect - 0.5;
         end
     end
     
@@ -43,11 +47,10 @@ for part = 1:22
     %         trialmatrix_clean(row).PCorrectChangeCat = 1;
     %     end
     % end
-    
+    pcorrect_raw = cell2mat({trialmatrix_clean.majPCorrect})';
     pcorrect = zscore(cell2mat({trialmatrix_clean.majPCorrect})');
-    pcorrect_change = {trialmatrix_clean.PCorrectChange};
-    pcorrect_change(cellfun('isempty',pcorrect_change)) = {NaN};
-    pcorrect_change= zscore(cell2mat(pcorrect_change)');
+    pcorrect_change = zscore(cell2mat({trialmatrix_clean.PCorrectChange})');
+    pcorrect_previous = zscore(vertcat(0.5, pcorrect_raw(2:end)));
     RT = zscore(cell2mat({trialmatrix_clean.timeSinceLastFlip})');
     flipNumber = cell2mat({trialmatrix_clean.flipNumber})';
     answer = cell2mat({trialmatrix_clean.answer})';
@@ -64,17 +67,28 @@ for part = 1:22
     participants(part).lm_condition = fitlm(tbl,'amplitude~pCorrect+condition');
     %test for additional effect of pcorrectChange
     participants(part).lm_pcorrectchange = fitlm(tbl,'amplitude~pCorrect+pCorrectChange');
-    %without pcorrect double-dipping?
-    participants(part).lm_time_pcorrectchange = fitlm(tbl,'amplitude~flipNumber+pCorrectChange');
-    %plot(lm5)
     %test for effect of time,change in evidence and condition
     participants(part).lm_time_evidence_condition = fitlm(tbl,'amplitude~flipNumber+pCorrectChange+condition');
     %test for effect of time,evidence change including pcorrect
     participants(part).lm_time_evidence_pcorrect = fitlm(tbl,'amplitude~flipNumber+pCorrectChange+pCorrect');
     %with interaction terms
-    participants(part).lm_time_condition_interaction = fitlm(tbl,'interactions','ResponseVar','amplitude','PredictorVars',{'flipNumber', 'condition'},'CategoricalVars','condition');
+    participants(part).lm_time_condition_interaction = fitlm(tbl,'interactions','ResponseVar','amplitude','PredictorVars',{'pcorrect', 'condition'},'CategoricalVars','condition');
     participants(part).lm_time_pcorrectchange_interaction = fitlm(tbl,'interactions','ResponseVar','amplitude','PredictorVars',{'pCorrect', 'pCorrectChange'});
     
+    %unstandardised
+    pcorrect = cell2mat({trialmatrix_clean.majPCorrect})';
+    pcorrect_change = cell2mat({trialmatrix_clean.PCorrectChange})';
+    pcorrect_previous = vertcat(0.5, pcorrect(2:end)));
+    RT = zscore(cell2mat({trialmatrix_clean.timeSinceLastFlip})');
+    flipNumber = cell2mat({trialmatrix_clean.flipNumber})';
+    answer = cell2mat({trialmatrix_clean.answer})';
+    condition = {trialmatrix_clean.type}';
+    amplitude = zscore(cell2mat({trialmatrix_clean.STV_regress_eeg_final})');
+    Pz_amplitude = zscore(cell2mat({trialmatrix_clean.Pz_amplitude})');
+    tbl2 = table(pcorrect,pcorrect_change,condition,amplitude,answer,flipNumber,Pz_amplitude,'VariableNames',{'pCorrect', 'pCorrectChange','condition','amplitude','answer','flipNumber','Pz_amplitude'});
+    %test for effect of context, change and interaction
+        participants(part).lm_pcorrect_pcorrectchange_interaction = fitlm(tbl,'interactions','ResponseVar','amplitude','PredictorVars',{'pCorrect_previous', 'pCorrectChange'});
+
 end
 
     save([save_filedir 'regression_results.mat'], 'participants', '-v7.3');
