@@ -24,5 +24,62 @@
 %majority and minority still having a role to play at marking the two
 %different options you are accumulating evidence for. 
 
+    %test for effect of time,change in evidence and condition
+    participants(part).lm_time_evidence_condition = fitlm(tbl,'amplitude~flipNumber+pCorrectChange+condition');
+    %test for effect of time,evidence change including pcorrect
+    participants(part).lm_time_evidence_pcorrect = fitlm(tbl,'amplitude~flipNumber+pCorrectChange+pCorrect');
+
+    image_filedir =  'C:\Github\IST_EEG_analysis\Regression_results\Images\';
+
 %extract beta estimates and run second order statistics comparing them to 0
-answer
+for part = 1:22
+answer_beta(part,1) = table2cell(participants(part).lm_answer.Coefficients(3,1));
+%answer_beta(part,2) = table2cell(participants(part).lm_answer.Coefficients(3,4));
+condition_beta(part,1) = table2cell(participants(part).lm_condition.Coefficients(3,1));
+pcorrect_change_beta(part,1) = table2cell(participants(part).lm_pcorrectchange.Coefficients(3,1));
+time_condition_interaction_beta(part,1) = table2cell(participants(part).lm_time_condition_interaction.Coefficients(4,1));
+time_pcorrectchange_interaction_beta(part,1) = table2cell(participants(part).lm_time_pcorrectchange_interaction.Coefficients(4,1));
+pcorrect_pcorrectchange_beta(part,1) = table2cell(participants(part).lm_pcorrect_pcorrectchange_interaction_unstandardised.Coefficients(4,1));
+time_condition_unstandardised_beta(part,1) = table2cell(participants(part).lm_time_condition_interaction_unstandardised.Coefficients(4,1));
+end
+
+[h,p] = ttest(cell2mat(answer_beta));
+histogram(cell2mat(answer_beta),15);
+
+    fignamesave =  [image_filedir 'betas_answer.png'];
+    find_fig = [image_filedir '\Part' num2str(part) '_Pcorrect_correlation_topoplot_and_trace.png' ];
+
+    saveas(gca, fignamesave);
+
+%run collinearity diagnostics on pcorrect and confidence
+participants = struct;
+filedir = 'C:\Github\IST_EEG_analysis\EEG\';
+filename = '_trialmatrix_EEG_regression_weighted_STV_short.mat';
+save_filedir =  'C:\Github\IST_EEG_analysis\';
+
+for part = 1:22
+        trialmatrix_filename = [filedir 'Part' num2str(part) filename];
+    load(trialmatrix_filename);
+    
+    events = {trialmatrix_clean.Cjsample};
+    events(cellfun('isempty',events)) = {[0]};
+    events= cell2mat(events);
+    all_events = find(events > 0);
+    select = trialmatrix_clean(all_events);
+pcorrect = cell2mat({select.majPCorrect})';
+confidence = cell2mat({select.Cjsample})';
+tbl = table(pcorrect,confidence,'VariableNames',{'pCorrect', 'confidence'});
+participants(part).vif = diag(inv(corrcoef(pcorrect,confidence)));
+% [sValue,condIdx,VarDecomp] = collintest(tbl);
+% participants(part).sValue = sValue;
+% participants(part).condIdx = condIdx;
+% participants(part).VarDecomp = VarDecomp;
+figure
+participants(part).R = corrplot(tbl,TestR="on");
+
+
+end 
+
+save([save_filedir 'pcorrect_confidence_collinearity_test_results.mat'], 'participants', '-v7.3');
+
+%I feel like since the vifs are all under 5, I can probably use this to run the model comparing pcorrect and  
