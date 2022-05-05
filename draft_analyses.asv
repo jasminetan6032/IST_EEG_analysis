@@ -21,6 +21,17 @@
 
 %plot STV over flips (but how to account for different lengths of trials?)
 
+%plot pcorrect and pcorrect change
+scatter(pcorrect,pcorrect_change)
+hold on
+xlabel('PCorrect')
+ylabel('Change in PCorrect')
+scatter(pcorrect_previous,pcorrect_change)
+hold on
+xlabel('PCorrect on previous trial')
+ylabel('Change in PCorrect')
+title('Correlations between pcorrect and p
+
 %majority and minority still having a role to play at marking the two
 %different options you are accumulating evidence for. 
 
@@ -39,18 +50,58 @@ condition_beta(part,1) = table2cell(participants(part).lm_condition.Coefficients
 pcorrect_change_beta(part,1) = table2cell(participants(part).lm_pcorrectchange.Coefficients(3,1));
 time_condition_interaction_beta(part,1) = table2cell(participants(part).lm_time_condition_interaction.Coefficients(4,1));
 time_pcorrectchange_interaction_beta(part,1) = table2cell(participants(part).lm_time_pcorrectchange_interaction.Coefficients(4,1));
-pcorrect_pcorrectchange_beta(part,1) = table2cell(participants(part).lm_pcorrect_pcorrectchange_interaction_unstandardised.Coefficients(4,1));
-time_condition_unstandardised_beta(part,1) = table2cell(participants(part).lm_time_condition_interaction_unstandardised.Coefficients(4,1));
+pcorrect_pcorrectchange_beta(part,1) = table2cell(participants(part).lm_pcorrect_pcorrectchange_interaction_unstandardised.Coefficients(3,1));
+pcorrect_pcorrectchange_interaction_beta(part,1) = table2cell(participants(part).lm_pcorrect_pcorrectchange_interaction_unstandardised.Coefficients(4,1));
+time_condition_unstandardised_interaction_beta(part,1) = table2cell(participants(part).lm_time_condition_interaction_unstandardised.Coefficients(4,1));
+time_condition_unstandardised_beta(part,1) = table2cell(participants(part).lm_time_condition_interaction_unstandardised.Coefficients(3,1));
+pcorrect_pcorrectchange1_beta(part,1) = table2cell(participants(part).lm_pcorrect_pcorrectchange_interaction_unstandardised.Coefficients(2,1));
+
 end
 
-[h,p] = ttest(cell2mat(answer_beta));
+[h,p,ci,stats] = ttest(cell2mat(answer_beta));
 histogram(cell2mat(answer_beta),15);
 
     fignamesave =  [image_filedir 'betas_answer.png'];
-    find_fig = [image_filedir '\Part' num2str(part) '_Pcorrect_correlation_topoplot_and_trace.png' ];
-
     saveas(gca, fignamesave);
 
+    [h,p,ci,stats] = ttest(cell2mat(pcorrect_pcorrectchange_beta));
+histogram(cell2mat(pcorrect_pcorrectchange_beta),15);
+
+    fignamesave =  [image_filedir 'betas_pcorrect_previous.png'];
+    saveas(gca, fignamesave);
+
+        [h,p,ci,stats] = ttest(cell2mat(pcorrect_pcorrectchange_interaction_beta));
+histogram(cell2mat(pcorrect_pcorrectchange_interaction_beta),15);
+
+    fignamesave =  [image_filedir 'betas_pcorrect_previous_interaction.png'];
+    saveas(gca, fignamesave);
+
+            [h,p,ci,stats] = ttest(cell2mat(condition_beta));
+histogram(cell2mat(condition_beta),15);
+
+    fignamesave =  [image_filedir 'betas_condition.png'];
+    saveas(gca, fignamesave);
+
+                [h,p,ci,stats] = ttest(cell2mat(time_condition_unstandardised_beta));
+histogram(cell2mat(time_condition_unstandardised_beta),15);
+
+    fignamesave =  [image_filedir 'betas_condition_time_unstandardised.png'];
+    saveas(gca, fignamesave);
+
+                [h,p,ci,stats] = ttest(cell2mat(pcorrect_change_beta));
+histogram(cell2mat(pcorrect_change_beta),15);
+
+    fignamesave =  [image_filedir 'betas_pcorrect_change.png'];
+    saveas(gca, fignamesave);
+
+                    [h,p,ci,stats] = ttest(cell2mat(time_pcorrectchange_interaction_beta));
+histogram(cell2mat(time_pcorrectchange_interaction_beta),15);
+
+    fignamesave =  [image_filedir 'betas_pcorrect_pcorrect_change_interaction.png'];
+    saveas(gca, fignamesave);
+    
+    [h,p,ci,stats] = ttest(cell2mat(pcorrect_pcorrectchange1_beta));
+histogram(cell2mat(pcorrect_pcorrectchange1_beta),15);
 %run collinearity diagnostics on pcorrect and confidence
 participants = struct;
 filedir = 'C:\Github\IST_EEG_analysis\EEG\';

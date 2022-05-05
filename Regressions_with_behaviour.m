@@ -51,7 +51,7 @@ for part = 1:22
     pcorrect_raw = cell2mat({trialmatrix_clean.majPCorrect})';
     pcorrect = zscore(cell2mat({trialmatrix_clean.majPCorrect})');
     pcorrect_change = zscore(cell2mat({trialmatrix_clean.PCorrectChange})');
-    pcorrect_previous = zscore(vertcat(0.5, pcorrect_raw(2:end)));
+    pcorrect_previous = zscore(vertcat(0.5, pcorrect_raw(1:length(pcorrect_raw)-1)));
     %RT = zscore(cell2mat({trialmatrix_clean.timeSinceLastFlip})');
     flipNumber = cell2mat({trialmatrix_clean.flipNumber})';
     answer = cell2mat({trialmatrix_clean.answer})';
@@ -76,7 +76,7 @@ for part = 1:22
     %unstandardised
     pcorrect = cell2mat({trialmatrix_clean.majPCorrect})';
     pcorrect_change = cell2mat({trialmatrix_clean.PCorrectChange})';
-    pcorrect_previous = vertcat(0.5, pcorrect(2:end));
+    pcorrect_previous = vertcat(0.5, pcorrect(1:length(pcorrect)-1));
     %RT = cell2mat({trialmatrix_clean.timeSinceLastFlip})';
     flipNumber = cell2mat({trialmatrix_clean.flipNumber})';
     answer = cell2mat({trialmatrix_clean.answer})';

@@ -21,6 +21,18 @@
 
 %plot STV over flips (but how to account for different lengths of trials?)
 
+%plot pcorrect and pcorrect change
+figure;subplot(2,1,1);scatter(pcorrect,pcorrect_change)
+title('Scatterplots for pcorrect,pcorrect in previous trial and change in pcorrect')
+hold on
+xlabel('PCorrect')
+ylabel('Change in PCorrect')
+subplot(2,1,2);scatter(pcorrect_previous,pcorrect_change)
+hold on
+xlabel('PCorrect on previous trial')
+ylabel('Change in PCorrect')
+
+
 %majority and minority still having a role to play at marking the two
 %different options you are accumulating evidence for. 
 
@@ -43,6 +55,8 @@ pcorrect_pcorrectchange_beta(part,1) = table2cell(participants(part).lm_pcorrect
 pcorrect_pcorrectchange_interaction_beta(part,1) = table2cell(participants(part).lm_pcorrect_pcorrectchange_interaction_unstandardised.Coefficients(4,1));
 time_condition_unstandardised_interaction_beta(part,1) = table2cell(participants(part).lm_time_condition_interaction_unstandardised.Coefficients(4,1));
 time_condition_unstandardised_beta(part,1) = table2cell(participants(part).lm_time_condition_interaction_unstandardised.Coefficients(3,1));
+pcorrect_pcorrectchange1_beta(part,1) = table2cell(participants(part).lm_pcorrect_pcorrectchange_interaction_unstandardised.Coefficients(2,1));
+
 end
 
 [h,p,ci,stats] = ttest(cell2mat(answer_beta));
@@ -86,6 +100,9 @@ histogram(cell2mat(time_pcorrectchange_interaction_beta),15);
 
     fignamesave =  [image_filedir 'betas_pcorrect_pcorrect_change_interaction.png'];
     saveas(gca, fignamesave);
+    
+    [h,p,ci,stats] = ttest(cell2mat(pcorrect_pcorrectchange1_beta));
+histogram(cell2mat(pcorrect_pcorrectchange1_beta),15);
 %run collinearity diagnostics on pcorrect and confidence
 participants = struct;
 filedir = 'C:\Github\IST_EEG_analysis\EEG\';
