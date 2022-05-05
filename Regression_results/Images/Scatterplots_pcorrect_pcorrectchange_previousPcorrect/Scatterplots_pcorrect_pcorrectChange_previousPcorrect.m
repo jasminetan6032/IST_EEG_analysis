@@ -36,3 +36,7 @@ th = findall(gca, 'type', 'text', 'String', '{\bf Correlation Matrix}');
 th.String = sprintf('Participant2: pcorrect, absolute change in pcorrect and pcorrect in previous trial \n Correlation matrix');
 
 save('C:\Github\IST_EEG_analysis\Regression_results\Images\For fun\scatterplots_pcorrect_abs.png');
+
+tbl_all = table(pcorrect,pcorrect_change,pcorrect_change_abs, pcorrect_previous,'VariableNames',{'pCorrect', 'change in pCorrect','absolute change in pCorrect','previous pCorrect'});
+
+vif = diag(inv(corrcoef(table2array(tbl_all))));
