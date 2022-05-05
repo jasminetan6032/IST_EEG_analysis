@@ -1,4 +1,4 @@
-function output = ttest_betas(participants,fignamesave,variableNumber)
+function output = ttest_betas(participants,fignamesave,outputsave,variableNumber)
 %takes a participants struct output from individual regressions
 %outputs the results of a one-sample t-test of the betas of interest
 %saves a histogram of betas in desired file
@@ -33,6 +33,9 @@ output.p = p;
 output.ci = ci;
 output.stats = stats;
 output.results = result;
+output.betas = lm_beta;
+
+save(outputsave, 'output', '-v7.3');
 
 print
 end
