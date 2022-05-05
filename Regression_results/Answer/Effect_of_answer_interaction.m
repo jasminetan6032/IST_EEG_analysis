@@ -31,6 +31,6 @@ end
 
     save([save_filedir 'answer_regression_results.mat'], 'participants', '-v7.3');
     
-    figname = [save_filedir 'answer_interaction_betas.png'];
-outputname = [save_filedir 'answer_interaction_results.mat'];
-output = ttest_betas(participants,figname,outputname,4);
+    figname = [save_filedir 'answer_betas.png'];
+outputname = [save_filedir 'answer_results.mat'];
+output = ttest_betas(participants,figname,outputname,3);
