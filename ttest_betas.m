@@ -13,8 +13,26 @@ end
 histogram(cell2mat(lm_beta),15);
 
 saveas(gca, fignamesave);
+
+if h == 1
+
+result = ['A one-tailed t-test was significant (t(' ...
+    num2str(stats.df) ') = ' ...
+    num2str(stats.tstat) ', p = ' num2str(p) ').']; 
+else 
+    result = ['A one-tailed t-test was non-significant (t(' ...
+    num2str(stats.df) ') = ' ...
+    num2str(stats.tstat) ', p = ' num2str(p) ').']; 
+end 
+
+%print result to command window
+disp(result)
+
 output.h = h;
 output.p = p;
 output.ci = ci;
 output.stats = stats;
+output.results = result;
+
+print
 end
