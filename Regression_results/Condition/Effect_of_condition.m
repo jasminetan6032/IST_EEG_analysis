@@ -40,9 +40,8 @@ for part = 1:22
     %with interaction terms
     %effect of condition and if there is an interaction with interaction
     participants(part).lm= fitlm(tbl,'interactions','ResponseVar','amplitude','PredictorVars',{'pCorrect', 'condition'},'CategoricalVars','condition');
-    participants(part).lm_Pz = fitlm(tbl,'interactions','ResponseVar','Pz_amplitude','PredictorVars',{'pCorrect', 'condition'},'CategoricalVars','condition');
     
     
 end
 
-    save([save_filedir 'regression_results.mat'], 'participants', '-v7.3');
+    save([save_filedir 'condition_regression_results.mat'], 'participants', '-v7.3');
