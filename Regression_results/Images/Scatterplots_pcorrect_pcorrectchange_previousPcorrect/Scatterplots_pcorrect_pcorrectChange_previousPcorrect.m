@@ -3,17 +3,17 @@ part = 2;
 trialmatrix_filename = [filedir 'Part' num2str(part) filename];
 load(trialmatrix_filename);
 
-for row = 1:length(trialmatrix_clean)
-    if ~(row == 1)
-        if ~(trialmatrix_clean(row).flipNumber == 1)
-            trialmatrix_clean(row).PCorrectChange = trialmatrix_clean(row).majPCorrect - trialmatrix_clean(row-1).majPCorrect;
-        elseif trialmatrix_clean(row).flipNumber == 1
-            trialmatrix_clean(row).PCorrectChange = trialmatrix_clean(row).majPCorrect - 0.5;
-        end
-    elseif row ==1
-        trialmatrix_clean(row).PCorrectChange = trialmatrix_clean(row).majPCorrect - 0.5;
-    end
-end
+% for row = 1:length(trialmatrix_clean)
+%     if ~(row == 1)
+%         if ~(trialmatrix_clean(row).flipNumber == 1)
+%             trialmatrix_clean(row).PCorrectChange = trialmatrix_clean(row).majPCorrect - trialmatrix_clean(row-1).majPCorrect;
+%         elseif trialmatrix_clean(row).flipNumber == 1
+%             trialmatrix_clean(row).PCorrectChange = trialmatrix_clean(row).majPCorrect - 0.5;
+%         end
+%     elseif row ==1
+%         trialmatrix_clean(row).PCorrectChange = trialmatrix_clean(row).majPCorrect - 0.5;
+%     end
+% end
 
 pcorrect = cell2mat({trialmatrix_clean.majPCorrect})';
 pcorrect_change = cell2mat({trialmatrix_clean.PCorrectChange})';
@@ -26,7 +26,7 @@ figure;
 R = corrplot(tbl,VarNames=varnames,TestR="on");
 th = findall(gca, 'type', 'text', 'String', '{\bf Correlation Matrix}'); 
 th.String = sprintf('Participant2: pcorrect, change in pcorrect and pcorrect in previous trial \n Correlation matrix');
-save('C:\Github\IST_EEG_analysis\Regression_results\Images\For fun\scatterplots_pcorrect.png');
+saveas(gca,'C:\Github\IST_EEG_analysis\Regression_results\Images\Scatterplots_pcorrect_pcorrectchange_previousPcorrect\scatterplots_pcorrect.jpg');
 
 tbl_abs = table(pcorrect,pcorrect_change_abs, pcorrect_previous,'VariableNames',{'pCorrect', 'absolute change in pCorrect','previous pCorrect'});
 varnames = tbl_abs.Properties.VariableNames;
@@ -35,7 +35,7 @@ R_abs = corrplot(tbl_abs,VarNames=varnames,TestR="on");
 th = findall(gca, 'type', 'text', 'String', '{\bf Correlation Matrix}'); 
 th.String = sprintf('Participant2: pcorrect, absolute change in pcorrect and pcorrect in previous trial \n Correlation matrix');
 
-save('C:\Github\IST_EEG_analysis\Regression_results\Images\For fun\scatterplots_pcorrect_abs.png');
+saveas(gca,'C:\Github\IST_EEG_analysis\Regression_results\Images\Scatterplots_pcorrect_pcorrectchange_previousPcorrect\scatterplots_pcorrect_abs.jpg');
 
 tbl_all = table(pcorrect,pcorrect_change,pcorrect_change_abs, pcorrect_previous,'VariableNames',{'pCorrect', 'change in pCorrect','absolute change in pCorrect','previous pCorrect'});
 
