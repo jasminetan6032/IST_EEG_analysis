@@ -1,13 +1,13 @@
 participants = struct;
 filedir = 'C:\Github\IST_EEG_analysis\EEG\Updated\';
 filename = '_EEG_regression_weighted_STV.mat';
-save_filedir =  'C:\Github\IST_EEG_analysis\Regression_results\PCorrectChange_Previous_PCorrect\Unstandardised\';
+save_filedir =  'C:\Github\IST_EEG_analysis\Regression_results\PCorrectChange_Previous_PCorrect\Unstandardised\Fixed\';
 
 for part = 1:22
         trialmatrix_filename = [filedir 'Part' num2str(part) filename];
     load(trialmatrix_filename);
 
-    %standardised values
+    %unstandardised values
     pcorrect = cell2mat({trialmatrix_clean.majPCorrect})';
     pcorrect_change = cell2mat({trialmatrix_clean.PCorrectChange})';
     pcorrect_previous = cell2mat({trialmatrix_clean.previousPCorrect})';
@@ -30,14 +30,14 @@ end
 
     save([save_filedir 'pcorrect_change_previous_interaction_unstandardised_regression_results.mat'], 'participants', '-v7.3');
     
-    figname = [save_filedir 'pcorrect_change_interaction_betas.png'];
-outputname = [save_filedir 'pcorrect_change_interaction_results.mat'];
-output = ttest_betas(participants,figname,outputname,4);
+    figname = [save_filedir 'pcorrect_change_interaction_change_betas.png'];
+outputname = [save_filedir 'pcorrect_change_interaction_change_results.mat'];
+output = ttest_betas(participants,figname,outputname,2);
 
 %for exploring interactions
 figure;
 plotInteraction(participants(2).lm, 'previous pCorrect','pCorrectChange','predictions') %first variable indicates the line categories 
 th = findall(gca, 'type', 'text', 'String', 'Interaction of previous pCorrect and pCorrectChange'); 
-th.String = sprintf('Participant2: Significant interaction of context and change in pCorrect');
-savefilename = [save_filedir 'Part2_pcorrectchange_previous_sig_interaction.jpg'];
+th.String = sprintf('Participant2: Non-significant interaction of context and change in pCorrect');
+savefilename = [save_filedir 'Part2_pcorrectchange_previous_nonsig_interaction.jpg'];
 saveas(gca,savefilename);
