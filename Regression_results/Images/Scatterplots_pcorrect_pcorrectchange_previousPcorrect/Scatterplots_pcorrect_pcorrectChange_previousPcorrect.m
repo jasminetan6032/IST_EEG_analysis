@@ -25,17 +25,17 @@ varnames = tbl.Properties.VariableNames;
 figure;
 R = corrplot(tbl,VarNames=varnames,TestR="on");
 th = findall(gca, 'type', 'text', 'String', '{\bf Correlation Matrix}'); 
-th.String = sprintf('Participant2: pcorrect, change in pcorrect and pcorrect in previous trial \n Correlation matrix');
-saveas(gca,'C:\Github\IST_EEG_analysis\Regression_results\Images\Scatterplots_pcorrect_pcorrectchange_previousPcorrect\scatterplots_pcorrect.jpg');
+th.String = sprintf('Participant22: pcorrect, change in pcorrect and pcorrect in previous trial \n Correlation matrix');
+saveas(gca,'C:\Github\IST_EEG_analysis\Regression_results\Images\Scatterplots_pcorrect_pcorrectchange_previousPcorrect\scatterplots_pcorrect_fixed.jpg');
 
 tbl_abs = table(pcorrect,pcorrect_change_abs, pcorrect_previous,'VariableNames',{'pCorrect', 'absolute change in pCorrect','previous pCorrect'});
 varnames = tbl_abs.Properties.VariableNames;
-figure;title('Participant2: pcorrect,pcorrect in previous trial and absolute change in pcorrect')
+figure;
 R_abs = corrplot(tbl_abs,VarNames=varnames,TestR="on");
 th = findall(gca, 'type', 'text', 'String', '{\bf Correlation Matrix}'); 
-th.String = sprintf('Participant2: pcorrect, absolute change in pcorrect and pcorrect in previous trial \n Correlation matrix');
+th.String = sprintf('Participant22: pcorrect, absolute change in pcorrect and pcorrect in previous trial \n Correlation matrix');
 
-saveas(gca,'C:\Github\IST_EEG_analysis\Regression_results\Images\Scatterplots_pcorrect_pcorrectchange_previousPcorrect\scatterplots_pcorrect_abs.jpg');
+saveas(gca,'C:\Github\IST_EEG_analysis\Regression_results\Images\Scatterplots_pcorrect_pcorrectchange_previousPcorrect\scatterplots_pcorrect_abs_fixed.jpg');
 
 tbl_all = table(pcorrect,pcorrect_change,pcorrect_change_abs, pcorrect_previous,'VariableNames',{'pCorrect', 'change in pCorrect','absolute change in pCorrect','previous pCorrect'});
 
