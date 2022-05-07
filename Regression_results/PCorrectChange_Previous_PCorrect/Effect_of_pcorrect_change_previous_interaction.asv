@@ -31,9 +31,9 @@ end
 
     save([save_filedir 'pcorrect_change_previous_interaction_regression_results.mat'], 'participants', '-v7.3');
     
-    figname = [save_filedir 'pcorrect_change_interaction_change_betas.png'];
-outputname = [save_filedir 'pcorrect_change_interaction_change_results.mat'];
-output = ttest_betas(participants,figname,outputname,2);
+    figname = [save_filedir 'pcorrect_previous_interaction_betas.png'];
+outputname = [save_filedir 'pcorrect_change_interaction_results.mat'];
+output = ttest_betas(participants,figname,outputname,3);
 
 %for exploring interactions
 figure;
