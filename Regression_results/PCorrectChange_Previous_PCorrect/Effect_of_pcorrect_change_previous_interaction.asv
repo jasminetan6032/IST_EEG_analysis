@@ -8,10 +8,9 @@ for part = 1:22
     load(trialmatrix_filename);
 
     %standardised values
-    pcorrect_raw = cell2mat({trialmatrix_clean.majPCorrect})';
     pcorrect = zscore(cell2mat({trialmatrix_clean.majPCorrect})');
     pcorrect_change = zscore(cell2mat({trialmatrix_clean.PCorrectChange})');
-    pcorrect_previous = zscore(vertcat(0.5, pcorrect_raw(1:length(pcorrect_raw)-1)));
+    pcorrect_previous = zscore(cell2mat({trialmatrix_clean.previousPCorrect})');
     %RT = zscore(cell2mat({trialmatrix_clean.timeSinceLastFlip})');
     flipNumber = cell2mat({trialmatrix_clean.flipNumber})';
     answer = cell2mat({trialmatrix_clean.answer})';
@@ -31,13 +30,13 @@ end
 
     save([save_filedir 'pcorrect_change_previous_interaction_regression_results.mat'], 'participants', '-v7.3');
     
-    figname = [save_filedir 'pcorrect_previous_interaction_betas.png'];
-outputname = [save_filedir 'pcorrect_change_interaction_results.mat'];
-output = ttest_betas(participants,figname,outputname,3);
+    figname = [save_filedir 'pcorrect_change_change_betas.png'];
+outputname = [save_filedir 'pcorrect_change_change_results.mat'];
+output = ttest_betas(participants,figname,outputname,2);
 
 %for exploring interactions
 figure;
 plotInteraction(participants(2).lm, 'previous pCorrect','pCorrectChange','predictions') %first variable indicates the line categories 
 th = findall(gca, 'type', 'text', 'String', 'Interaction of previous pCorrect and pCorrectChange'); 
-th.String = sprintf('Participant2: Significant interaction of context and change in pCorrect');
-saveas(gca,'C:\Github\IST_EEG_analysis\Regression_results\PCorrectChange_Previous_PCorrect\Part2_pcorrectchange_previous_sig_interaction.jpg');
+th.String = sprintf('Participant2: Non-significant interaction of context and change in pCorrect');
+saveas(gca,'C:\Github\IST_EEG_analysis\Regression_results\PCorrectChange_Previous_PCorrect\Part2_pcorrectchange_previous_nonsig_interaction.jpg');
