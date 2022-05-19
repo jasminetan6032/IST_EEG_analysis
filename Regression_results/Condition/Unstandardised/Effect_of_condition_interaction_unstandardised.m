@@ -1,7 +1,7 @@
 participants = struct;
 filedir = 'C:\Github\IST_EEG_analysis\EEG\Updated\';
 filename = '_EEG_regression_weighted_STV.mat';
-save_filedir =  'C:\Github\IST_EEG_analysis\Regression_results\Condition\Unstandardised\';
+save_filedir =  'C:\Github\IST_EEG_analysis\Regression_results\Condition_confidence\Unstandardised\';
 
 for part = 1:22
         trialmatrix_filename = [filedir 'Part' num2str(part) filename];
