@@ -1,7 +1,7 @@
-participants = struct;
+1participants = struct;
 filedir = 'C:\Github\IST_EEG_analysis\EEG\Updated\';
 filename = '_EEG_regression_weighted_STV.mat';
-save_filedir =  'C:\Github\IST_EEG_analysis\Regression_results\Answer\Unstandardised\';
+save_filedir =  'C:\Github\IST_EEG_analysis\Regression_results\Condition_confidence\Unstandardised\';
 
 for part = 1:22
         trialmatrix_filename = [filedir 'Part' num2str(part) filename];
@@ -23,21 +23,21 @@ for part = 1:22
     
     %with interaction terms
     %effect of condition and if there is an interaction with interaction
-    %participants(part).lm= fitlm(tbl,'interactions','ResponseVar','amplitude','PredictorVars',{'pCorrect', 'answer'},'CategoricalVars','answer');
-    participants(part).lm = fitlm(tbl,'amplitude~pCorrect+answer');
+    participants(part).lm= fitlm(tbl,'interactions','ResponseVar','amplitude','PredictorVars',{'pCorrect', 'condition'},'CategoricalVars','condition');
+    %participants(part).lm = fitlm(tbl,'amplitude~pCorrect+answer');
     
 end
 
-    save([save_filedir 'answer_NoInteraction_regression_results.mat'], 'participants', '-v7.3');
+    save([save_filedir 'condition_regression_results.mat'], 'participants', '-v7.3');
     
-    figname = [save_filedir 'answer_NoInteraction_betas.png'];
-outputname = [save_filedir 'answer_NoInteraction_results.mat'];
-output = ttest_betas(participants,figname,outputname,2);
+    figname = [save_filedir 'condition_betas.png'];
+outputname = [save_filedir 'condition_results.mat'];
+output = ttest_betas(participants,figname,outputname,3);
 
-% %for exploring interactions
-% figure;
-% plotInteraction(participants(2).lm, 'answer','pCorrect','predictions') %first variable indicates the line categories 
-% th = findall(gca, 'type', 'text', 'String', 'Interaction of answer and pCorrect'); 
-% th.String = sprintf('Participant2: Significant interaction of answer and pCorrect');
-% savefilename = [save_filedir 'Part2_pcorrectchange_abs_sig_interaction.jpg'];
-% saveas(gca,savefilename);
+%for exploring interactions
+figure;
+plotInteraction(participants(14).lm, 'condition','pCorrect','predictions') %first variable indicates the line categories 
+th = findall(gca, 'type', 'text', 'String', 'Interaction of condition and pCorrect'); 
+th.String = sprintf('Participant14: Significant interaction of condition and pCorrect');
+savefilename = [save_filedir 'Part14_condition_sig_interaction.jpg'];
+saveas(gca,savefilename);
