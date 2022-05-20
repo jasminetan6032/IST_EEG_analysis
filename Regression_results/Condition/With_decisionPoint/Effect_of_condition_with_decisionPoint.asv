@@ -31,7 +31,7 @@ end
     save([save_filedir 'condition_decisionPoint_results.mat'], 'participants', '-v7.3');
     
     figname = [save_filedir 'condition_int_pcorrect_betas.png'];
-outputname = [save_filedir 'condition_int_pcorrect_results.mat'];
+outputname = [save_filedir 'answer_results.mat'];
 output = ttest_betas(participants,figname,outputname,5);
 
 % %for exploring interactions
