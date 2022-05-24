@@ -61,6 +61,25 @@ end
 sig_group = find(cell2mat(lm_beta(:,1))>0);
 nonsig_group = find(cell2mat(lm_beta(:,1))<0);
 
+sig_participants = participants(sig_group);
+nonsig_participants = participants(nonsig_group);
+save_filedir = 'C:\Github\IST_EEG_analysis\Regression_results\Answer\By_behaviour';
+    figname = [save_filedir 'sig_group_answer_interaction_betas.png'];
+outputname = [save_filedir 'sig_group_answer_interaction_results.mat'];
+output_sig = ttest_betas(sig_participants,figname,outputname,4);
+
+    figname = [save_filedir 'nonsig_group_answer_interaction_betas.png'];
+outputname = [save_filedir 'nonsig_group_answer_interaction_results.mat'];
+output_nonsig = ttest_betas(nonsig_participants,figname,outputname,4);
+
+variableNumber = 4;
+
+for part = 1:length(participants)
+    lm_STV(part,1) = table2cell(participants(part).lm.Coefficients(variableNumber,1));
+    lm_STV(part,2) = table2cell(participants(part).lm.Coefficients(variableNumber,4));
+end
+
+
 trialmatrix_sig = [];
 %collate groups 
 for part = 1:length(sig_group)
