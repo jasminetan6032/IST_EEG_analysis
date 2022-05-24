@@ -24,15 +24,15 @@ for part = 1:22
     
     %with interaction terms
     %effect of condition and if there is an interaction with interaction
-    participants(part).lm= fitlm(tbl,'interactions','ResponseVar','amplitude','PredictorVars',{'pCorrect', 'answer'},'CategoricalVars','answer');
-    
+    participants(part).lm= fitlm(tbl,'interactions','ResponseVar','Pz_amplitude','PredictorVars',{'pCorrect', 'answer'},'CategoricalVars','answer');
+    %participants(part).lm = fitlm(tbl,'Pz_amplitude~pCorrect+answer');
     
 end
 
-    save([save_filedir 'answer_regression_results.mat'], 'participants', '-v7.3');
+    save([save_filedir 'answer_Pz_regression_interaction_results.mat'], 'participants', '-v7.3');
     
-    figname = [save_filedir 'answer_betas.png'];
-outputname = [save_filedir 'answer_results.mat'];
+    figname = [save_filedir 'answer_Pz_interaction_justAnswer_betas.png'];
+outputname = [save_filedir 'answer_Pz_interaction_justAnswer_results.mat'];
 output = ttest_betas(participants,figname,outputname,3);
 
 %for exploring interactions
