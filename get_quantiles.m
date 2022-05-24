@@ -1,4 +1,5 @@
 %get_quantiles
+
 %get fixed quantiles
 load('C:\Github\IST_EEG_analysis\EEG\Updated\Part2_EEG_regression_weighted_STV.mat')
     pcorrect = cell2mat({trialmatrix_clean.majPCorrect})';
@@ -22,3 +23,8 @@ Q_change = quantile(pcorrect_change,4);
 
 Q_previous = quantile(pcorrect_previous,2);
 
+%classify based on pcorrectchange quantile and pcorrect context quantile
+
+%average STV
+
+%plot
