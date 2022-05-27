@@ -30,14 +30,14 @@ end
 
     save([save_filedir 'pcorrect_change_previous_interaction_unstandardised_regression_results.mat'], 'participants', '-v7.3');
     
-    figname = [save_filedir 'pcorrect_change_interaction_change_betas.png'];
-outputname = [save_filedir 'pcorrect_change_interaction_change_results.mat'];
-output = ttest_betas(participants,figname,outputname,2);
+    figname = [save_filedir 'pcorrect_change_interaction_betas.png'];
+outputname = [save_filedir 'pcorrect_change_interaction_results.mat'];
+output = ttest_betas(participants,figname,outputname,4);
 
 %for exploring interactions
 figure;
-plotInteraction(participants(2).lm, 'previous pCorrect','pCorrectChange','predictions') %first variable indicates the line categories 
+plotInteraction(participants(20).lm, 'previous pCorrect','pCorrectChange','predictions') %first variable indicates the line categories 
 th = findall(gca, 'type', 'text', 'String', 'Interaction of previous pCorrect and pCorrectChange'); 
-th.String = sprintf('Participant2: Non-significant interaction of context and change in pCorrect');
+th.String = sprintf('Participant20: Non-significant interaction of context and change in pCorrect');
 savefilename = [save_filedir 'Part2_pcorrectchange_previous_nonsig_interaction.jpg'];
 saveas(gca,savefilename);
