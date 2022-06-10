@@ -1,7 +1,8 @@
-filedir = 'D:\Jasmine\EEG\IST\Electrode_regression\SingleTrialValue\';
+filedir = 'D:\Jasmine\EEG\IST\Electrode_regression\SingleTrialValue_Fixed\';
 filename = '_trialmatrix_EEG_regression_weighted_STV_final.mat';
 
-cd C:\Github\IST_EEG_analysis\EEG
+cd C:\Github\IST_EEG_analysis\EEG\Updated
+save_filedir =  'C:\Github\IST_EEG_analysis\EEG_csv\';
 
 for part = 1:22
     %load data
@@ -9,9 +10,29 @@ for part = 1:22
     load(trialmatrix_filename);
     
     %remove unnecessary fields
-    trialmatrix_clean = rmfield(trialmatrix_clean, {'reconstruct_pcorrect_eeg_final','EEGdata','pcorrect_reg_regress_weights', 'reconstruct_pcorrect_reg', 'STV_reg_regress_electrodes', 'pcorrect_regress_weights', 'reconstruct_pcorrect', 'STV_regress_electrodes', 'pcorrect_regress_weights_eeg_alt'});
-    save(['Part' num2str(part) '_trialmatrix_EEG_regression_weighted_STV_short.mat'], 'trialmatrix_clean', '-v7.3');
+    trialmatrix_clean = rmfield(trialmatrix_clean, {'EEGdata','pcorrect_reg_regress_weights', 'reconstruct_pcorrect_reg', 'STV_reg_regress_electrodes', 'pcorrect_regress_weights', 'reconstruct_pcorrect', 'STV_regress_electrodes', 'pcorrect_regress_weights_eeg_alt'});
     
+    %add pcorrect change and pcorrect previous
+    for row = 1:length(trialmatrix_clean)
+        if ~(row == 1)
+            if ~(trialmatrix_clean(row).flipNumber == 1)
+                trialmatrix_clean(row).PCorrectChange = trialmatrix_clean(row).majPCorrect - trialmatrix_clean(row-1).majPCorrect;
+                trialmatrix_clean(row).previousPCorrect = trialmatrix_clean(row-1).majPCorrect;
+                
+            elseif trialmatrix_clean(row).flipNumber == 1
+                trialmatrix_clean(row).PCorrectChange = trialmatrix_clean(row).majPCorrect - 0.5;
+                trialmatrix_clean(row).previousPCorrect = 0.5;
+            end
+        elseif row ==1
+            trialmatrix_clean(row).PCorrectChange = trialmatrix_clean(row).majPCorrect - 0.5;
+            trialmatrix_clean(row).previousPCorrect = 0.5;
+        end
+    end
+        save(['Part' num2str(part) '_EEG_regression_weighted_STV.mat'], 'trialmatrix_clean', '-v7.3');
+
+    
+    save_filename = [save_filedir 'Part' num2str(part) '_EEG_regression_weighted_STV_fixed.csv'];
+writetable(struct2table(trialmatrix_clean),save_filename);
 end
 
 participants = struct;

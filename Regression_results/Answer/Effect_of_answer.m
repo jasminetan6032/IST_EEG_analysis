@@ -6,6 +6,10 @@ save_filedir =  'C:\Github\IST_EEG_analysis\Regression_results\Answer\';
 for part = 1:22
         trialmatrix_filename = [filedir 'Part' num2str(part) filename];
     load(trialmatrix_filename);
+    
+    noisy = cell2mat({trialmatrix_clean.noisy});
+    cleandata = find(noisy == 0);
+    trialmatrix_clean = trialmatrix_clean(cleandata);
 
     %standardised values
     pcorrect_raw = cell2mat({trialmatrix_clean.majPCorrect})';
