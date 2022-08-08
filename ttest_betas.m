@@ -9,7 +9,8 @@ for part = 1:length(participants)
 end
 
 %remove outliers
-lm_beta = rmoutliers(cell2mat(lm_beta));
+lm_beta = cell2mat(lm_beta);
+%lm_beta = rmoutliers(cell2mat(lm_beta));
 
 %one-sample t-test with histogram
 [h,p,ci,stats] = ttest(lm_beta);

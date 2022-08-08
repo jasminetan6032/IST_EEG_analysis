@@ -1,13 +1,13 @@
 participants = struct;
 filedir = 'C:\Github\IST_EEG_analysis\EEG\Updated\';
 filename = '_EEG_regression_weighted_STV.mat';
-save_filedir =  'C:\Github\IST_EEG_analysis\Regression_results\Answer\Unstandardised\';
+save_filedir =  'C:\Github\IST_EEG_analysis\Regression_results\Answer\Unstandardised_fixed\';
 
 for part = 1:22
         trialmatrix_filename = [filedir 'Part' num2str(part) filename];
     load(trialmatrix_filename);
 
-    %standardised values
+    %unstandardised values
     pcorrect = cell2mat({trialmatrix_clean.majPCorrect})';
     pcorrect_change = cell2mat({trialmatrix_clean.PCorrectChange})';
     pcorrect_previous = cell2mat({trialmatrix_clean.previousPCorrect})';
@@ -23,16 +23,16 @@ for part = 1:22
     
     %with interaction terms
     %effect of condition and if there is an interaction with interaction
-    %participants(part).lm= fitlm(tbl,'interactions','ResponseVar','amplitude','PredictorVars',{'pCorrect', 'answer'},'CategoricalVars','answer');
-    participants(part).lm = fitlm(tbl,'amplitude~pCorrect+answer');
+    participants(part).lm= fitlm(tbl,'interactions','ResponseVar','amplitude','PredictorVars',{'pCorrect', 'answer'},'CategoricalVars','answer');
+    %participants(part).lm = fitlm(tbl,'amplitude~pCorrect+answer');
     
 end
 
-    save([save_filedir 'answer_NoInteraction_regression_results.mat'], 'participants', '-v7.3');
+    save([save_filedir 'answer_WithInteraction_regression_results.mat'], 'participants', '-v7.3');
     
-    figname = [save_filedir 'answer_pcorrect_NoInteraction_betas.png'];
-outputname = [save_filedir 'answer_pcorrect_NoInteraction_results.mat'];
-output = ttest_betas(participants,figname,outputname,2);
+    figname = [save_filedir 'answer_pcorrect_NoInteraction_answer_interaction_betas.png'];
+outputname = [save_filedir 'answer_pcorrect_NoInteraction_answer_interaction_results.mat'];
+output = ttest_betas(participants,figname,outputname,4);
 
 %for exploring interactions
 figure;

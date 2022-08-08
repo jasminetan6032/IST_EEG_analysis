@@ -101,19 +101,14 @@ for row = 1:length(trialmatrix_all)
 end
 
 low_previous = find(previous_bins == 1);
-plotdata(1,1) = mean(pcorrect_change(low_previous));
-plotdata(1,2) = mean(STV(low_previous));
+plotdata(1,1 = mean(pcorrect_change(low_previous));
+low_STV = mean(STV(low_previous));
 
-mid_previous = find(previous_bins == 2);
-plotdata(2,1) = mean(pcorrect_change(mid_previous));
-plotdata(2,2) = mean(STV(mid_previous));
+low_previous = find(previous_bins == 1);
+low_change = mean(pcorrect_change(low_previous));
+low_STV = mean(STV(low_previous));
+withinQ = quantile(low_change,4);
 
-high_previous = find(previous_bins == 3);
-plotdata(3,1) = mean(pcorrect_change(high_previous));
-plotdata(3,2) = mean(STV(high_previous));
-withinQ = quantile(pcorrect_change(low_previous),4);
-withinQ2 = quantile(pcorrect_change(mid_previous),4);
-withinQ3 = quantile(pcorrect_change(high_previous),4);
 figure;
 subplot(2,1,1);
 histogram(cell2mat({trialmatrix_all.PreviousBin}));
