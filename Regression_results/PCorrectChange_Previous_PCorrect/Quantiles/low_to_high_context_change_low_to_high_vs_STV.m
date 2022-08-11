@@ -99,3 +99,15 @@ figure;plot(x,line1,x,line2,x,line3);
 test = reshape(plotdata',1,[])';
 context_bins = [1,1,1,2,2,2,3,3,3];
 test_cat = cat(2,test,context_bins');
+
+%if you want to calculate mean and SD on your own
+y = rand(1,10); % your mean vector;
+x = 1:numel(y);
+std_dev = 1;
+curve1 = y + std_dev;
+curve2 = y - std_dev;
+x2 = [x, fliplr(x)];
+inBetween = [curve1, fliplr(curve2)];
+fill(x2, inBetween, 'g');
+hold on;
+plot(x, y, 'r', 'LineWidth', 2);
