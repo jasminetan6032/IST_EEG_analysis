@@ -63,15 +63,15 @@ for part = 1:22
 
 end
 
-all_data = [];
+STV = [];
 for part = 1:22
-    participant = participants(part).data;
-    all_data = cat(1,all_data, participant);
+    participant = participants(part).STVdata';
+    STV = cat(1,STV, participant);
 end
 
-context = all_data(:,1);
-change = all_data(:,3);
-STV = all_data(:,4);
+context = avg_data(:,1);
+change = avg_data(:,2);
+STV = avg_data(:,3);
 
 tbl = table(context,change, STV, 'VariableNames', {'context','change','EEG'});
 s = scatter(tbl,'change','EEG','filled','ColorVariable','context');
