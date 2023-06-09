@@ -22,7 +22,7 @@ for part = 1:22
         end
     end
     %extract change, STV and bin numbers for context
-    pcorrect_change = cell2mat({trialmatrix_clean.PCorrectChange})';
+    pcorrect_change = abs(cell2mat({trialmatrix_clean.PCorrectChange})');
     STV = cell2mat({trialmatrix_clean.STV_regress_eeg_final});
     previous_bins = cell2mat({trialmatrix_clean.PreviousBin});
 
